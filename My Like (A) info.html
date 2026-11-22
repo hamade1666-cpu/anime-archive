@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أرشيف الأنمي المشترك — أرشيف منسّق للطباعة على A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;
+    --bg2:#0f131a;
+    --panel:#141922;
+    --panel2:#1a202b;
+    --line:#28313d;
+    --gold:#d9a94c;
+    --gold2:#f2cd86;
+    --txt:#e9edf3;
+    --mut:#93a0b1;
+    --danger:#e08a5f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 500px at 80% -10%, #1c160d 0%, transparent 60%),
+      radial-gradient(900px 400px at 10% 0%, #101823 0%, transparent 55%),
+      var(--bg);
+    color:var(--txt);
+    font-family:"Tajawal","Segoe UI",Tahoma,system-ui,sans-serif;
+    line-height:1.8;
+    padding:0 0 70px;
+    min-height:100vh;
+  }
+  a{color:var(--gold2)}
+
+  /* ===== Header ===== */
+  .site-head{
+    position:relative;
+    border-bottom:2px solid var(--gold);
+    background:linear-gradient(135deg,#0f141c,#161d28 55%,#221a10);
+    padding:30px 22px 24px;
+    text-align:center;
+    box-shadow:0 18px 40px -30px #000;
+  }
+  .brand-mark{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:3px;color:var(--gold);
+    border:1px solid #4a3a20;border-radius:30px;padding:3px 14px;
+    margin-bottom:12px;background:#0c1016;
+  }
+  .site-head h1{
+    margin:0 0 8px;font-size:28px;font-weight:900;letter-spacing:.4px;
+    background:linear-gradient(180deg,#f7dda6,#cf9c3e);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .site-head p{margin:0;color:var(--mut);font-size:13.5px}
+
+  .stat-strip{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:16px;
+  }
+  .stat-chip{
+    background:#0a0d12;border:1px solid var(--line);border-radius:10px;
+    padding:7px 16px;font-size:12.5px;color:var(--mut);
+    display:flex;align-items:center;gap:8px;
+  }
+  .stat-chip b{color:var(--gold2);font-size:15px;font-weight:900}
+  .stat-chip.count{border-color:#5c4720}
+
+  .top-actions{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:16px;
+  }
+
+  /* ===== Buttons ===== */
+  button{
+    cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:700;
+    border-radius:9px;padding:9px 20px;border:1px solid var(--gold);
+    background:linear-gradient(180deg,#e6b95f,#bf8d33);
+    color:#12161d;transition:.16s;
+  }
+  button:hover{filter:brightness(1.12)}
+  button:active{transform:translateY(1px)}
+  button.ghost{background:#12171f;color:var(--gold2);font-weight:600;border-color:#4a3a20}
+  button.ghost:hover{background:#1c1710;filter:none}
+  button.mini{
+    padding:5px 13px;font-size:11.5px;font-weight:600;border-radius:7px;
+    background:transparent;border:1px solid var(--line);color:var(--mut);
+  }
+  button.mini:hover{color:var(--gold2);border-color:var(--gold);filter:none;background:#1a1409}
+  button.mini.del{color:var(--danger);border-color:#4a3226}
+  button.mini.del:hover{background:#221310;color:#f0a97c;border-color:#7a4a30}
+
+  /* ===== Form ===== */
+  .add-form{
+    max-width:1140px;margin:24px auto 6px;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:20px 20px 22px;
+    box-shadow:0 30px 60px -50px #000;
+  }
+  .add-form h2{
+    margin:0 0 16px;font-size:15px;color:var(--gold2);
+    border-right:4px solid var(--gold);padding-right:11px;font-weight:700;
+  }
+  .grid-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11px}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-size:11.5px;color:var(--mut);letter-spacing:.2px}
+  .fld input,.fld textarea,.fld select{
+    background:#0a0d12;border:1px solid var(--line);color:var(--txt);
+    border-radius:8px;padding:9px 11px;font-family:inherit;font-size:13px;outline:none;
+    transition:.15s;
+  }
+  .fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--gold);background:#0d1118}
+  .fld textarea{min-height:86px;resize:vertical;line-height:1.7}
+  .btn-row{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+  .msg{font-size:12.5px;margin-top:11px;color:var(--gold2);min-height:18px}
+  .msg.err{color:var(--danger)}
+  .note{
+    font-size:11.5px;color:var(--mut);margin-top:10px;padding-top:9px;
+    border-top:1px dashed var(--line);
+  }
+  .note b{color:#c8d3e0;font-weight:600}
+
+  /* ===== Cards ===== */
+  .cards{max-width:1140px;margin:26px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:15px}
+  .card{
+    display:flex;background:var(--panel);border:1px solid var(--line);
+    border-radius:13px;overflow:hidden;page-break-inside:avoid;break-inside:avoid;
+    transition:.18s;
+  }
+  .card:hover{border-color:#3d4a5c;box-shadow:0 20px 40px -35px #000}
+  .poster{flex:0 0 auto;width:150px;background:#070a0e;position:relative}
+  .poster img{width:100%;height:100%;display:block;object-fit:cover;object-position:top center}
+  .poster .ph{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-size:11px;color:#57657a;background:repeating-linear-gradient(45deg,#0c1016,#0c1016 8px,#11161f 8px,#11161f 16px);
+  }
+  .poster.broken img{display:none}
+  .poster.broken .ph{display:flex}
+  .info{flex:1 1 auto;padding:14px 18px 16px;display:flex;flex-direction:column;gap:9px;min-width:0}
+  .head{display:flex;align-items:flex-start;gap:10px}
+  .num{
+    flex:0 0 auto;background:#0a0d12;border:1px solid var(--gold);color:var(--gold2);
+    font-size:11.5px;font-weight:900;border-radius:6px;padding:1px 9px;margin-top:5px;
+    font-family:ui-monospace,monospace;
+  }
+  .titles{flex:1 1 auto;min-width:0}
+  .en{margin:0;font-size:16.5px;color:#fff;font-weight:700;line-height:1.45;word-break:break-word}
+  .ar{margin:2px 0 0;font-size:13.5px;color:var(--gold2);font-weight:600}
+  .acts{flex:0 0 auto;display:flex;gap:6px;margin-right:auto;margin-top:2px}
+  .meta{display:flex;flex-wrap:wrap;gap:7px}
+  .tag{
+    font-size:11.5px;background:#0a0d12;border:1px solid var(--line);color:var(--mut);
+    border-radius:20px;padding:1px 12px;
+  }
+  .tag.season{color:var(--gold2);border-color:#5a4820}
+  .cast{font-size:12.5px;color:#c3cdda;display:flex;flex-direction:column;gap:3px}
+  .cast b{color:var(--gold);font-weight:700}
+  .syn{margin:2px 0 0;font-size:13px;color:#aeb9c7;text-align:justify}
+  .empty{color:var(--mut);font-size:14px;text-align:center;padding:44px 16px;border:1px dashed var(--line);border-radius:14px}
+
+  /* ===== Print cover ===== */
+  .print-cover{display:none}
+
+  /* ===== Print ===== */
+  @media print{
+    @page{size:A4 portrait;margin:9mm}
+
+    html,body{
+      background:#fff !important;color:#000 !important;padding:0 !important;
+      font-family:"Tajawal",Tahoma,sans-serif;font-size:10pt;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+
+    .site-head,.add-form,.top-actions,.btn-row,.msg,.note,.stat-strip,.acts,.brand-mark{display:none !important}
+
+    .print-cover{
+      display:flex !important;flex-direction:column;justify-content:center;align-items:center;
+      text-align:center;height:250mm;padding:0 10mm;
+      page-break-after:always;break-after:page;
+      page-break-inside:avoid;break-inside:avoid;
+    }
+    .cover-kicker{margin:0 0 4mm;font-size:9.5pt;letter-spacing:3px;color:#444}
+    .cover-rule{width:100%;border:0;border-top:2px solid #000;margin:6mm 0}
+    .cover-title{margin:0;font-size:30pt;line-height:1.25;color:#000;letter-spacing:1px;font-weight:900}
+    .cover-sub{margin:4mm 0 0;font-size:11pt;color:#333}
+    .cover-stats{width:100%;display:flex;flex-direction:column;gap:4mm;margin:10mm 0}
+    .stat{
+      display:flex;justify-content:space-between;align-items:baseline;
+      border:1px solid #000;padding:3.5mm 6mm;text-align:right;
+    }
+    .stat-lbl{font-size:10.5pt;color:#000}
+    .stat-val{font-size:14pt;font-weight:900;color:#000}
+    .cover-foot{margin:6mm 0 0;font-size:8.5pt;color:#444}
+
+    .cards{
+      display:block;max-width:none;margin:0;padding:0;
+      page-break-before:always;break-before:page;
+    }
+    .card{
+      background:#fff !important;border:1px solid #666 !important;border-radius:0;
+      margin:0 0 5mm 0;box-shadow:none;
+      page-break-inside:avoid !important;break-inside:avoid !important;
+    }
+    .poster{width:32mm;background:#fff}
+    .poster img{width:32mm;height:auto;max-height:48mm;object-fit:cover}
+    .poster .ph{display:none}
+    .info{padding:3mm 4mm;gap:2mm}
+    .num{background:#fff !important;border:1px solid #000;color:#000}
+    .en{color:#000;font-size:11pt}
+    .ar{color:#000;font-weight:700;font-size:10pt}
+    .tag{background:#fff !important;border:1px solid #777;color:#000}
+    .tag.season{color:#000;border-color:#000}
+    .cast,.cast b{color:#000}
+    .syn{color:#000;font-size:9.3pt}
+    .empty{display:none}
+
+    /* طباعة بطاقة واحدة */
+    body.printing-one .print-cover{display:none !important}
+    body.printing-one .cards{page-break-before:auto;break-before:auto}
+    body.printing-one .card:not(.print-target){display:none !important}
+    body.printing-one .card.print-target{margin-bottom:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== غلاف الطباعة ===== -->
+<section class="print-cover" id="printCover">
+  <p class="cover-kicker">ملف مرجعي — أرشيف مشترك</p>
+  <hr class="cover-rule">
+  <h1 class="cover-title">أرشيف الأنمي</h1>
+  <p class="cover-sub">القائمة الكاملة للعناوين المحفوظة في هذا الأرشيف</p>
+  <div class="cover-stats">
+    <div class="stat">
+      <span class="stat-lbl">إجمالي عدد العناوين في القائمة</span>
+      <span class="stat-val" id="statCount">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-lbl">تاريخ آخر إضافة</span>
+      <span class="stat-val" id="statDate">—</span>
+    </div>
+  </div>
+  <hr class="cover-rule">
+  <p class="cover-foot">تم توليد هذه الشريحة تلقائياً من الأرشيف السحابي</p>
+</section>
+
+<!-- ===== الترويسة ===== -->
+<header class="site-head">
+  <div class="brand-mark">أرشيف سحابي مشترك</div>
+  <h1>أرشيف الأنمي — القائمة الكاملة</h1>
+  <p>ملف مرجعي منسّق للطباعة على ورق A4 ومزامن مع قاعدة البيانات</p>
+  <div class="stat-strip">
+    <span class="stat-chip count">عدد العناوين: <b id="counter">0</b></span>
+    <span class="stat-chip">آخر إضافة: <b id="lastAdd">—</b></span>
+    <span class="stat-chip" id="connChip">حالة الاتصال: جارٍ الفحص…</span>
+  </div>
+  <div class="top-actions">
+    <button class="ghost" type="button" id="importBtn">استيراد الأنميات من المستند إلى قاعدة البيانات</button>
+    <button class="ghost" type="button" id="reloadBtn">تحديث القائمة من السحابة</button>
+    <button type="button" onclick="printAll()">طباعة الأرشيف كاملاً</button>
+  </div>
+</header>
+
+<!-- ===== نموذج الإضافة ===== -->
+<section class="add-form" id="addForm">
+  <h2>إضافة أنمي جديد إلى الأرشيف</h2>
+  <div class="grid-form">
+    <div class="fld full">
+      <label>رابط صورة الغلاف (jpg / png / webp)</label>
+      <input id="fImg" type="url" placeholder="https://...">
+    </div>
+    <div class="fld">
+      <label>اسم الأنمي بالإنجليزية *</label>
+      <input id="fEn" type="text" placeholder="Anime Title">
+    </div>
+    <div class="fld">
+      <label>الترجمة العربية *</label>
+      <input id="fAr" type="text" placeholder="الاسم بالعربية">
+    </div>
+    <div class="fld">
+      <label>اسم البطل الرئيسي *</label>
+      <input id="fMc" type="text" placeholder="اسم الشخصية">
+    </div>
+    <div class="fld">
+      <label>الشخصيات الثانوية المهمة</label>
+      <input id="fSc" type="text" placeholder="مفصولة بفاصلة">
+    </div>
+    <div class="fld">
+      <label>سنة الإنتاج *</label>
+      <input id="fYear" type="number" min="1960" max="2035" placeholder="2024">
+    </div>
+    <div class="fld">
+      <label>الفصل</label>
+      <select id="fSeason">
+        <option value="شتاء">شتاء</option>
+        <option value="ربيع">ربيع</option>
+        <option value="صيف">صيف</option>
+        <option value="خريف">خريف</option>
+      </select>
+    </div>
+    <div class="fld full">
+      <label>نبذة عن القصة (40 كلمة أو أكثر) *</label>
+      <textarea id="fSyn" placeholder="اكتب نبذة تفصيلية لا تقل عن 40 كلمة..."></textarea>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button id="addBtn" type="button">إضافة الأنمي إلى الأرشيف</button>
+    <button class="ghost" type="button" onclick="printAll()">طباعة الصفحة</button>
+    <button class="ghost" type="button" id="resetBtn">استعادة القائمة المبدئية</button>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div class="note">تُحفظ البيانات في قاعدة <b>Supabase</b> السحابية وتظهر لكل من يفتح الموقع. عند تعذّر الاتصال تُعرض القائمة المبدئية محلياً حتى تعود الشبكة.</div>
+</section>
+
+<main class="cards" id="cards"></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+/* ==================== بيانات المستند (92 عنواناً) ==================== */
+const SEED = [
+{title_en:"Seirei Gensouki",title_ar:"سجلات الأرواح",main_character:"ريو (هاروتو أماكاوا)",side_characters:"سيليا كلير، لاتيفا، ميهارو أياسي، كريستينا بلتروم",release_year:2021,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1836/116060.jpg",synopsis:"بعد وفاته المفاجئة، يستيقظ الطالب الياباني هاروتو أماكاوا في جسد صبي فقير يدعى ريو داخل عالم مليء بالسحر والأرواح. يحمل ذكريات حياته السابقة ومهارات سيف لا تُقهر، فيبدأ رحلة للبحث عن هويته الحقيقية والانتقام لأمه. يلتقي خلالها بفتيات نبيلات وشخصيات خارقة، ويتورط في صراعات سياسية بين ممالك متناحرة، بينما يحاول حماية من يحب دون أن يفقد إنسانيته."},
+{title_en:"Sword Art Online",title_ar:"سوورد آرت أونلاين",main_character:"كيريتو (كازوتو كيريغايا)",side_characters:"أسونا يوكي، ليافا، يوي، كلاين",release_year:2012,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/11/39717.jpg",synopsis:"يُحبس عشرة آلاف لاعب داخل لعبة الواقع الافتراضي الكامل بعد أن يعلن مبتكرها أن الموت داخل اللعبة يعني الموت الحقيقي، وأن الطريق الوحيد للنجاة هو الوصول إلى الطابق المئة. يخوض كيريتو، المنعزل الماهر بالسيف، معارك دامية ضد الوحوش واللاعبين القتلة، ويجد في أسونا رفيقة دربه وحبه، في قصة عن البقاء والحب والتضحية داخل عالم رقمي بلا رحمة."},
+{title_en:"Rokudenashi Majutsu Koushi to Akashic Records",title_ar:"أستاذ السحر المشاغب وسجلات أكاشيك",main_character:"غلين رادارز",side_characters:"سيستين فيبل، روميا تينغل، ري=إل رايفورد",release_year:2017,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/8/85593.jpg",synopsis:"يُجبر غلين رادارز، الساحر الكسول والمقامر، على تدريس مادة السحر في أكاديمية ألزانو الملكية رغم فشله الظاهري. لكن خلف قناع اللامبالاة يخفي قدرات قتالية مرعبة وماضياً غامضاً. عندما تستهدف قوى مظلمة طالبته سيستين وزميلتها روميا، يضطر لكشف حقيقته وخوض معارك خطيرة لحمايتهما، في مزيج من الفانتازيا المدرسية والكوميديا والقتال."},
+{title_en:"Tensei Kizoku no Isekai Boukenroku",title_ar:"سجلات مغامرات نبيل مُتناسخ في عالم آخر",main_character:"كاين فون سيلفورد",side_characters:"تيليستيا، سيلفيا، رينا",release_year:2023,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1071/135255.jpg",synopsis:"يُقتل رجل أعمال ياباني في حادث، ثم يُبعث من جديد في جسد كاين فون سيلفورد، الابن الثالث لعائلة نبيلة في عالم سحري. تمنحه الآلهة بركات هائلة عند ولادته، فيصبح طفلاً خارقاً يتدرب سراً على السيف والسحر. يخفي كاين قوته الحقيقية عن الجميع لتجنب الشهرة، لكنه ينجذب إلى مغامرات خطيرة ويبني علاقات مع بنات النبلاء، في فانتازيا مريحة عن طفل أقوى من الجميع."},
+{title_en:"Date A Live",title_ar:"ديت أ لايف",main_character:"شيدو إيتسوكا",side_characters:"توها ياتوغامي، كورومي توكيساكي، أوريغامي توبييتشي، كوتوري إيتسوكا",release_year:2013,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/13/44844.jpg",synopsis:"تهبط كائنات غامضة تُسمى الأرواح على الأرض مسببة كوارث زلزالية هائلة، ويُكلّف شيدو إيتسوكا بمهمة مختلفة عن القتال: مواعدتهنّ وإقناعهنّ بالاستسلام عبر تقبيلهنّ وختم قوتهنّ. يعمل شيدو مع أخته الصغيرة قائده في السرية، ويواجه في كل مرة روحاً جديدة بشخصية مختلفة، في مزيج من الأكشن الرومانسي والخيال العلمي والكوميديا."},
+{title_en:"Zero no Tsukaima",title_ar:"خادم الصفر",main_character:"سايتو هيراغا",side_characters:"لويز فرانسواز لا فاليير، سييستا، هنريتا",release_year:2006,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/8/20680.jpg",synopsis:"في أكاديمية سحرية للنبلاء، تفشل لويز في كل تعويذة فتُلقّب بالصفر. في حفل الاستدعاء تستدعي بالخطأ شاباً يابانياً عادياً هو سايتو هيراغا، ليصبح خادمها ورفيقها. رغم خلافاتهما المتواصلة، يجد سايتو نفسه في قلب حرب بين الممالك، ويقف بجانب لويز في مواجهة أعداء أقوياء، في حكاية فانتازية عن الحب والنمو والولاء."},
+{title_en:"Shomin Sample",title_ar:"عيّنة من عامة الشعب",main_character:"كيميتو كاغورازاكا",side_characters:"أيكا تينكووباشي، ريكو أريسوغاوا، هاكوا شيودومي، كارين جينريو",release_year:2015,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/9/76542.jpg",synopsis:"يُخطف كيميتو كاغورازاكا من حياته العادية ويُنقل إلى أكاديمية داخلية معزولة تُدرّس فيها بنات النخبة بعيداً عن العالم الحديث. يُطلب منه أن يكون عينة من عامة الشعب ليعوّدهنّ على الحياة الطبيعية، لكنه يُجبر على التظاهر بشغفه الغريب بالعضلات. يعيش كيميتو بين فتيات غريبات الأطوار وشديدات التعلق، في كوميديا مدرسية مليئة بالمواقف المحرجة."},
+{title_en:"Seikoku no Dragonar",title_ar:"أكاديمية الدراغونار",main_character:"آش بليك",side_characters:"إيكو، سيلفيا لاوتريمانت، ريبيكا راندال",release_year:2014,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/13/56419.jpg",synopsis:"في عالم يمتلك فيه كل نبيل تنيناً حارساً، يولد آش بليك بعلامة تنين لكن دون بيضة. تخرج من جسده فجأة فتاة صغيرة تُدعى إيكو تدّعي أنها تنينه، وتصفه بالخادم. يدخل آش أكاديمية الدراغونار ليتدرب ويحمي إيكو من أعداء يريدون قوتها، في قصة فانتازيا قتالية تجمع الأكشن والرومانسية والكوميديا."},
+{title_en:"Kemono Jihen",title_ar:"كيمونو جييهن",main_character:"كاباني كوساكا",side_characters:"كوهاتشي إينوغامي، شيكي تاديمارو، أكيرا، كون",release_year:2021,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1258/108331.jpg",synopsis:"يعيش كاباني في قرية نائية حيث يُنبذه الجميع لرائحته الغريبة وقدرته على البقاء دون أن يمرض. يأتي المحقق الغامض إينوغامي ليكتشف أن كاباني نصف وحش، ويضمه إلى وكالة تحقق في جرائم الكيمونو. يبدأ كاباني حياة جديدة مع رفاق من أنصاف الوحوش، ويكتشف أسرار ماضيه وهوية والديه في قصة خارقة للطبيعة تمزج الغموض بالأكشن."},
+{title_en:"Otonari no Tenshi-sama",title_ar:"الملاك المجاورة تُدلّلني",main_character:"أماني فوجيميا",side_characters:"ماهيرو شيينا، إيتسوكي أكازاوا، تشيتوسي شيراكاوا",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1240/133638.jpg",synopsis:"يعيش أماني فوجيميا وحيداً في شقته مهملاً لنفسه وطعامه، حتى يلتقي جارته ماهيرو شيينا، الطالبة المتفوقة الجميلة التي يسميها الجميع الملاك. تبدأ ماهيرو برعايته وتنظيف منزله وطهي طعامه بشرط الحفاظ على المسافة، لكن مشاعرهما تنمو ببطء وسط تحفظها وتصرفاته الباردة، في رومانسية هادئة دافئة عن العزلة والاعتناء."},
+{title_en:"Absolute Duo",title_ar:"الثنائي المطلق",main_character:"تورو كوكونويه",side_characters:"جولي سيغتونا، ليليث بريستول، ميابي هوتاكا",release_year:2015,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/4/68839.jpg",synopsis:"يلتحق تورو كوكونويه بأكاديمية تدرّب طلابها على تشكيل أسلحة من أرواحهم، لكنه يفشل في إظهار سلاحه ويظهر بدلاً منه درع. يُلحق بشراكة إجبارية مع جولي سيغتونا، الفتاة الشمالية الهادئة الماهرة بالسيوف. يتدرب الاثنان معاً ليتقنا القتال الثنائي ويواجهان خصوماً في اختبارات قاتلة، في قصة أكشن مدرسية عن الثقة والشراكة."},
+{title_en:"Isekai wa Smartphone to Tomo ni",title_ar:"في عالم آخر مع هاتفي الذكي",main_character:"تويا موتشيزوكي",side_characters:"يومينا أورنيا بيلفاست، لينزي، إلزي، ياي كوكونويه",release_year:2017,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/7/86794.jpg",synopsis:"تُصيب صاعقة تويا موتشيزوكي بالقتل، فتسمح له الآلهة بالولادة من جديد في عالم سحري بشرط ألا يحمل إلا هاتفه الذكي. يكتشف تويا أن الهاتف يعمل ويعطيه معلومات وقدرات مذهلة، فيصبح مغامراً سريع التطور. يجمع حوله رفيقات وشخصيات ملكية، ويحل أزمات الممالك بسهولة مريحة، في فانتازيا كوميدية خفيفة عن قوة هائلة بلا تعب."},
+{title_en:"Kinsou no Vermeil (Vermeil in Gold)",title_ar:"فيرميل في الذهب",main_character:"ألتو غولدفيلد",side_characters:"فيرميل، ليليا كودلفيت، كريس ويستلاند",release_year:2022,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1561/125302.jpg",synopsis:"في أكاديمية سحرية، يفشل ألتو غولدفيلد في استدعاء أي كائن حتى يجد كتاباً قديماً يستدعي منه شيطانة غامضة تُدعى فيرميل. تعقد فيرميل معه عقداً يربط قوتهما ويجعلها تعتمد عليه، بينما تخفي حقيقتها وأسباب أسرها. يقود ألتو نحو هدفه في إتقان السحر، ويتورط في صراعات أكبر من الأكاديمية، في فانتازيا رومانسية كوميدية."},
+{title_en:"Spy x Family",title_ar:"سباي إكس فاميلي",main_character:"لويد فورجر (توواي)",side_characters:"آنيا فورجر، يور فورجر، يوري بريار، فرانكي فرانكلين",release_year:2022,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1441/122795.jpg",synopsis:"يتخفى الجاسوس المحترف توواي بهوية لويد فورجر، ويحتاج إلى عائلة وهمية لإتمام مهمة سرية. يتبنى الفتاة القارئة للأفكار آنيا ويتزوج القاتلة المحترفة يور، دون أن يعرف أي منهما حقيقة الآخر. تتحول العائلة المزيفة إلى حقيقية تدريجياً وسط مواقف كوميدية يومية ومهام خطيرة، في مزيج فريد من التجسس والكوميديا العائلية."},
+{title_en:"Arifureta Shokugyou de Sekai Saikyou",title_ar:"أريفوريتا: أقوى مهنة في العالم",main_character:"هاچيمي ناغومو",side_characters:"يوي، شيا هاوليا، تيو كلاروس، كاوري شيراساكي",release_year:2019,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1776/97682.jpg",synopsis:"يُخطف طلاب صف كامل إلى عالم آخر ليقاتلوا في متاهات خطيرة، ويُترك هاچيمي ناغومو المستضعف يسقط في هاوية عميقة. هناك يأكل لحم الوحوش ويصبح قاسياً وبارداً، ويصنع أسلحة خارقة ليصعد للانتقام ممن تخلّوا عنه. يلتقي في طريقه بشخصيات منبوذة مثله ويبني حزبه، في قصة أكشن قوية عن التحول والانتقام والبقاء."},
+{title_en:"Hyouken no Majutsushi ga Sekai wo Suberu",title_ar:"ساحر النصل الجليدي يحكم العالم",main_character:"راي وايت",side_characters:"أميليا روز، إليزا غريفيث، كلاريس كليفلاند",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1049/131580.jpg",synopsis:"يدخل راي وايت أكاديمية أرنولد النخبوية بصفته طالباً عادياً، رغم أنه يحمل سراً هائلاً: إنه آخر ساحر يستخدم السحر الجليدي الأسطوري. يحاول راي عيش حياة طبيعية بعيداً عن صراعات الماضي، لكن أعداءً من العالم القديم يلاحقونه. يبني صداقات مع زميلاته ويدافع عنهنّ، في فانتازيا مدرسية عن الإرث والقوة المخفية."},
+{title_en:"Seiken Gakuin no Makentsukai",title_ar:"سيد السيف الشيطاني في أكاديمية إكسكاليبر",main_character:"ليونيس ديث ماغنوس",side_characters:"ريزيليا راي كريستاليا، ريجينا مرسيدس، إلفين فيليت",release_year:2023,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1506/138529.jpg",synopsis:"يستيقظ سيد الشياطين ليونيس من نوم ألف عام في جسد صبي صغير، ويجد أن موارثه صارت أبطالاً، فيلتحق بأكاديمية إكسكاليبر لاستعادة قوته. هناك ينقذ الفتاة ريزيليا ويحصل على لقب سيد السيف الشيطاني. يقاتل ليونيس الوحوش والجحافل التي تهدد البشرية بجانب رفاقه، في قصة فانتازيا قتالية عن ملك شيطاني يحمي العالم."},
+{title_en:"Mashle",title_ar:"ماشل",main_character:"ماش بورنيديد",side_characters:"لانس كراون، دوت باريت، فين آميز، ليمون إيرفين",release_year:2023,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1218/135107.jpg",synopsis:"في عالم يحكمه السحر، يولد ماش بورنيديد بلا موهبة سحرية إطلاقاً، لكنه يملك قوة عضلية خارقة وباردة. يلتحق بأكاديمية السحر إيستون وهدفه الوحيد حماية أخيه الصغير عبر الوصول إلى مرتبة الإلهي. يتغلب ماش على كل سحر بقبضتيه، ويجمع رفاقاً غريبين، في كوميديا ساخرة وأكشن مبالغ فيه يشبه المحاكاة لسلسلة سحرية شهيرة."},
+{title_en:"Jewelpet Twinkle",title_ar:"جويلبيت توينكل",main_character:"أكاري ساكورا",side_characters:"روبي، ميريا، سارا، ليون",release_year:2010,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/12/73943.jpg",synopsis:"تلتقي أكاري ساكورا بجوهرة سحرية تُدعى روبي تهبط من السماء، وتصبح شريكتها في أكاديمية سحرية في عالم آخر. تحلم أكاري بالفوز بجائزة كبرى تُحقّق أمنيتها، فتدخل منافسات بين صائدي جواهر، وتتعلّم الصداقة والتعاون مع رفاقها. تواجه أكاري منافسين ومخاطر عديدة، في أنمي سحري موجه للأطفال عن الأحلام والمثابرة."},
+{title_en:"Saikyou Onmyouji no Isekai Tenseiki",title_ar:"تناسخ أقوى أونميجي في عالم آخر",main_character:"هارويوشي كوغا (سيكا لامبروغ)",side_characters:"إيفا، آمو، ييفا، مابل كرين",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1547/125900.jpg",synopsis:"بعد موته، يعيد أقوى أونميجي في اليابان هارويوشي كوغا نفسه في عالم سحري كابن لأسرة نبيلة، محتفظاً بذكرياته ومواهبه. يختار هوية سيكا لامبروغ ويعيش ببرود، لكنه لا يستطيع تجاهل ضعاف يحتاجون حماية. يستخدم طلاسمه القديمة لمواجهة تهديدات جديدة، ويكشف عن قوة مرعبة أمام الجميع، في فانتازيا عن سيد فنون روحية في عالم غريب."},
+{title_en:"Yuusha Party wo Tsuihou sareta Beast Tamer",title_ar:"مُروّض الوحوش المطرود من فريق البطل",main_character:"رين شراود",side_characters:"كانادي، تانيا، سورا",release_year:2022,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1084/126652.jpg",synopsis:"يُطرد رين شراود من فريق البطل لأن مهارته الوحيدة هي ترويض الوحوش، والتي يراها الجميع بلا قيمة. يكتشف رين أن مهارته في الحقيقة من أقوى المهارات، فيصبح مروّضاً محترفاً يعقد عقوداً مع وحوش أسطورية. يلتقي بقطط بشرية وغيرها من الرفاق الأقوياء، ويبني حزبه ليصبح الأقوى، في قصة فانتازيا مريحة عن الطرد والانتقام الناجح."},
+{title_en:"100-nin no Kanojo",title_ar:"المئة حبيبة التي تحبك حقاً",main_character:"رينتارو أيجو",side_characters:"هاكاري هانازونو، كاراني إندا، شيزوكا يوشيموتو، نانو إياي",release_year:2023,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1812/136764.jpg",synopsis:"تُخبر رينتارو أيجو في طفولته أن قدره أن يجد مئة حبيبة، لكن سرعان ما يصطدم بأن حبيباته الأولى يبدأن بالظهور في المدرسة. يحاول رينتارو إسعاد كل واحدة منهنّ بلا تمييز، فينشأ حريم هائل من شخصيات مختلفة الأطباع. يواجه مواقف مستحيلة كوميدية لتنسيق وقته وجهده، في قصة رومانسية كوميدية مبالغ فيها وسريعة الإيقاع."},
+{title_en:"Lv2 kara Cheat datta Motoyuusha Kouho",title_ar:"من المستوى الثاني أصبحت خارقاً",main_character:"فليو",side_characters:"ريس، باليروسا، بيليري",release_year:2024,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1103/142513.jpg",synopsis:"يموت فليو قبل موعده ويعيد نفسه في عالم آخر، حيث يحصل على مهارات خارقة تبدأ من المستوى الثاني. يقرر أن يعيش بحرية مع الفتيات اللواتي ينقذهنّ، ويبني بلدة آمنة ويقضي على الوحوش بسهولة. ينتقل فليو من إنقاذ إلى آخر ويصبح بطلاً شعبياً، في فانتازيا خفيفة عن قدرة مطلقة وحياة مريحة وسط مغامرات متتالية."},
+{title_en:"Isekai Nonbiri Nouka",title_ar:"حياة زراعية مريحة في عالم آخر",main_character:"هيراكو هيتاتشي",side_characters:"لو، آن، لولوني، تير",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1983/132329.jpg",synopsis:"يموت هيراكو هيتاتشي بمرض ويُمنح حياة ثانية في عالم آخر مع أداة زراعة خارقة تُنبت كل شيء فوراً. يستقر هيراكو في غابة ويعيش حياة زراعية هادئة، لكن مزارعه المثالية تجذب الوحوش والفتيات والمهاجرين. تتوسع قريته إلى بلدة مزدهرة بلا حروب، في قصة فانتازيا هادئة عن الزراعة والبناء والحياة البسيطة."},
+{title_en:"Isekai Meikyuu de Harem wo",title_ar:"حريم في متاهة عالم آخر",main_character:"ميتشيو كاغا",side_characters:"روكسان، شيري، ميريا، فيستا",release_year:2022,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1490/126919.jpg",synopsis:"يستيقظ ميتشيو كاغا في عالم آخر داخل متاهة، ويقرر أن هدفه الوحيد جمع المال والحصول على حريم. ينقذ الفتاة المقاتلة روكسان ويشتري حريتها، فيصبحا شريكين في استكشاف المتاهة وقتل الوحوش. يتوسع حزبه بشراء مزيد من الفتيات، ويوازن بين التخطيط القتالي وحياته اليومية، في قصة فانتازيا تهتم بالتفاصيل العملية."},
+{title_en:"Sokushi Cheat ga Saikyou sugite",title_ar:"مهارة الموت الفوري أقوى من اللازم",main_character:"يوغيري تاكاتو",side_characters:"توموتشيكا دانّورا، موكوموكو دانّورا، سيون، لينيل",release_year:2024,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1734/139673.jpg",synopsis:"يُخطف يوغيري تاكاتو ورفاقه إلى عالم آخر مع قدرات خارقة، لكن قدرة يوغيري هي الموت الفوري لأي شيء يريده، بلا سحر ولا لمعان. ينطلق يوغيري مع توموتشيكا في رحلة للبحث عن طريق للعودة إلى اليابان، ويقتل ببرود كل من يعترضه أو يهدده. يواجه حكماء وآلهة وأبطالاً، في قصة أكشن ساخرة عن قوة مطلقة بلا حماس."},
+{title_en:"Dekisokonai to Yobareta Motoeiyuu",title_ar:"البطل السابق الذي لُقّب بالفاشل",main_character:"آلن",side_characters:"رييس، نويل، ميلين",release_year:2024,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1158/141710.jpg",synopsis:"يُطرد آلن، البطل السابق الذي أُعيد إحياؤه في جسد مراهق، من وظيفته الملكية بعد أن أصبحت قوته غير مستقرة. يبدأ آلن حياة حرّة مغامراً بلا قيود، ويستخدم مواهبه القديمة لإنقاذ الآخرين. يجمع حوله رفاقاً من بينهم فتيات عاليات المقام، ويواجه أعداء من ماضيه، في فانتازيا خفيفة عن بطل يتجاهل مكانته ويختار حريته."},
+{title_en:"One Room, Hiatari Futsuu, Tenshi-tsuki",title_ar:"شقة صغيرة، إضاءة عادية، وملاك",main_character:"شينتارو توكوميتسو",side_characters:"تووا، تسوموغي، نويرو",release_year:2024,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1833/141321.jpg",synopsis:"ينتقل شينتارو توكوميتسو للعيش وحده في شقة صغيرة ضيقة، ويستيقظ ذات صباح ليجد فتاة غريبة الأطوار تظهر في شرفته وتدّعي أنها ملاك. يتبنى شينتارو الفتاة تووا ويعيش معها ومع صديقتها المجنونة تسوموغي وغيرها من الشخصيات غير العادية، في قصة يومية دافئة عن العائلة البديلة والرومانسية الخفيفة."},
+{title_en:"Isekai Shoukan wa Nidome desu",title_ar:"الاستدعاء إلى عالم آخر للمرة الثانية",main_character:"سيتسو",side_characters:"إلكا، مينامي، شيرونيكو، روري",release_year:2023,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1387/134151.jpg",synopsis:"يُستدعى سيتسو إلى عالم آخر وهو طفل، ويصبح بطلاً يسقط سيد الشياطين ويؤسس حكماً، ثم يعود إلى اليابان. بعد سنوات يُستدعى مرة ثانية إلى العالم نفسه ليكتشف أن السلام انهار بعد رحيله. يعود سيتسو بقوته الكاملة لتصحيح الأخطاء وإعادة أصدقائه، في قصة فانتازيا قوية عن المسؤولية والعودة إلى ساحة القتال."},
+{title_en:"Isekai Maou to Shoukan Shoujo no Dorei Majutsu",title_ar:"كيف لا تستدعي سيد الشياطين",main_character:"ديابلو (تاكوما ساكاموتو)",side_characters:"شيرا إل غرينوود، ريم غاليو، لوماكينا ويسيليا",release_year:2018,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1649/93412.jpg",synopsis:"يُسحب تاكوما ساكاموتو من غرفته في جسد شخصية لعبه ديابلو، سيد الشياطين الأقوى، ليجد نفسه في عالم آخر مع فتاتين استدعتاه عن طريق الخطأ. يعجز عن التخلي عن تمثيل دور سيد الشياطين أمام الجميع، فيتصرف بتعجرف بينما يخفي توتره الشديد. يقاتل ديابلو لتحرير أصدقائه من سحر العبودية، في كوميديا فانتازية مليئة بالقتال والمواقف المحرجة."},
+{title_en:"Keikenzumi na Kimi to, Keiken Zero na Ore",title_ar:"أنتِ ذات خبرة وأنا بلا خبرة",main_character:"ريوتو كاشيما",side_characters:"رونا شيراكاوا، ماريا، نيكول",release_year:2024,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1848/140019.jpg",synopsis:"يقرر ريوتو كاشيما الاعتراف بحبه لرونا شيراكاوا، زميلته ذات الخبرة في العلاقات، ويجد نفسه في علاقة معها رغم خجله وقلّة تجربته. يخفف الاثنان عنهما العبء بمواعدة سرية، ويتعلمان كيف يتعاملان مع الغيرة والثقة والخلافات. يقدّم الأنمي رومانسية هادئة واقعية عن فتاة تعرف أكثر من صبي يتعلّم من الصفر."},
+{title_en:"Kore wa Zombie desu ka",title_ar:"هل هذا زومبي؟",main_character:"أيومو أيكاوا",side_characters:"إيوكليد هيلسيث، هارونا، سيرافيم، مايلستروم",release_year:2011,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/13/75521.jpg",synopsis:"يُقتل أيومو أيكاوا ويُعاد إحياؤه كزومبي بلا قلب، ليجد نفسه في مواجهة عالم من السحرة والمصاصين. يصبح خادماً لمصاصة دماء قوية تدعى إيوكليد، ويحصل على منشار كهربائي كسلاح، ويخوض معارك ضد وحوش تغزو مدينته. يوازن أيومو بين مدرسته ومهامه القتالية، في كوميديا خارقة للطبيعة مليئة بالمواقف المجنونة."},
+{title_en:"Yumemiru Danshi wa Genjitsushugisha",title_ar:"الفتى الحالم واقعي",main_character:"واتارو ساجو",side_characters:"آيكا ناتسوكاوا، كيسوكي ساجو، مينا",release_year:2023,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1239/134810.jpg",synopsis:"لطالما حلم واتارو ساجو بالفتاة المحبوبة آيكا، لكنه يستيقظ فجأة على حقيقة أن موقفه لا يتقدم، فيقرر التوقف عن مطاردتها. تتغير تصرفات واتارو ويهتم بذاته أكثر، فتبدأ آيكا بالشعور بالفراغ وتقترب منه تدريجياً. تتطور العلاقة من طرف واحد إلى شدّ وجذب حقيقي، في رومانسية مدرسية عن سوء الفهم وتأخر المشاعر."},
+{title_en:"Ijiranaide, Nagatoro-san",title_ar:"لا تتعبي عليّ يا ناغاتورو",main_character:"ناوتو هاتشيؤوجي",side_characters:"هاياسي ناغاتورو، غامو-تشان، يوشي، ساكورا",release_year:2021,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1900/110097.jpg",synopsis:"يتعرض ناوتو هاتشيؤوجي، الطالب الخجول المنعزل، لسخرية مستمرة من هاياسي ناغاتورو، الطالبة الأصغر والرياضية الحيوية. رغم أن ناغاتورو تتدلله وتضايقه، فإنها تدفعه للخروج من عزلته والانضمام إلى أنشطة النادي. تنمو بينهما مشاعر خفية وسط تسلية مستمرة، في رومانسية كوميدية عن الثقة والتقدّم البطيء."},
+{title_en:"Shichisei no Subaru",title_ar:"سبعة حساسات",main_character:"هاروتو آمو",side_characters:"آساهي كوغا، تاكانوري ميكادو، نوزومي كوساكا، ساتسوكي أوسوي",release_year:2018,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1956/94914.jpg",synopsis:"يجتمع أعضاء فريق سبعة حساسات بعد انحلاله بسنوات، بعد أن شهدوا موت زعيمهم أشي في اللعبة واختفاء رفاقه. يعود الفريق إلى لعبة جديدة تسمح بإحياء الأرواح، ويكتشفون أن أشي قد يعود فعلاً، لكن الحقيقة أعقد. يواجهون خصوماً وأسراراً داخل اللعبة، في قصة عن الصداقة والفقد والإصرار على استعادة ما ضاع."},
+{title_en:"Osananajimi ga Zettai ni Makenai Love Comedy",title_ar:"صديقة الطفولة لا تخسر أبداً",main_character:"سوهارو مادرو",side_characters:"كوروها شيدا، شيروكوسا كاتشي، ماريا موموساكا",release_year:2021,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1111/113327.jpg",synopsis:"يعترف سوهارو مادرو بحبه لشيروكوسا صديقة طفولته، لكن المفاجأة أنها ترفضه بأسلوب قاسٍ، ثم تعلن كل من شيروكوسا وكوروها الحرب للفوز بقلبه. يجد سوهارو نفسه بين حبيبته السابقة ورفيقته المقربة في صراع رومانسي محموم. تتشابك المواقف الكوميدية والمكائد، في قصة عن الحب بعد الرفض والمنافسة الحادة."},
+{title_en:"Oroka na Tenshi wa Akuma to Odoru",title_ar:"الملاك الأحمق يرقص مع الشيطان",main_character:"ماساتورا أكوتسو",side_characters:"ليلي أماني، يوكا تاناهاشي، كينساكو هيروتا",release_year:2024,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1902/139271.jpg",synopsis:"يهبط الشيطان ماساتورا أكوتسو على الأرض ليصطاد أرواحاً بشرية ويقود قواته، فيلتحق بمدرسة ثانوية كطالب عادي. هناك يلتقي بزميلته ليلي التي يكتشف أنها ملاك أرسل لمراقبته، فتصبح بينهما هدنة مشروطة وشراكة غريبة. يخفي كل منهما حقيقته عن المدرسة، في رومانسية كوميدية عن ملاك وشيطان يتقاربان رغم عدائهما."},
+{title_en:"Make Heroine ga Oosugiru",title_ar:"البطلات الخاسرات أكثر من اللازم",main_character:"كازوهيكو نوكوميزو",side_characters:"آنا يانامي، ريمون ياكيشيو، تشيكا كوماري",release_year:2024,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1332/143513.jpg",synopsis:"ينسحب كازوهيكو نوكوميزو من أي علاقة رومانسية ويصبح مراقباً صامتاً، لكنه يقع في حياة البطلات الخاسرات في صفه. كل واحدة منهنّ خسرت حبها الأول، فيبدأ بمساعدتهنّ على تخطي الألم والتعرف عليهنّ عن قرب. تتشكل صداقة غريبة بين مجموعة من الشخصيات المكسورة، في كوميديا رومانسية عن الهزائم الصغيرة والنمو."},
+{title_en:"Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san",title_ar:"آليا تخفي مشاعرها بالروسية أحياناً",main_character:"ماساتشيكا كوزي",side_characters:"أليسا ميخائيلوفنا كوجو، يوكي سوؤو، ماريا كوجو",release_year:2024,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1596/152806.jpg",synopsis:"تستفزّت آليا كوجو، الطالبة المتفوقة الجميلة نصف الروسية، زميلها ماساتشيكا كوزي بكلمات روسية تظن أنها لا تُفهَم. لكن ماساتشيكا يفهم الروسية جيداً ويكتشف أنها تقول مشاعرها الحقيقية في تلك الكلمات. يخفي معرفته ويتابع التصرف معها، في كوميديا رومانسية عن الخجل والغموض والتنافس المدرسي."},
+{title_en:"Yozakura-san Chi no Daisakusen",title_ar:"المهمة الكبرى لعائلة يوزاكورا",main_character:"تاييو أسانو",side_characters:"موتسومي يوزاكورا، كيوييتشيرو يوزاكورا، فوتابا يوزاكورا، شيون يوزاكورا",release_year:2024,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1674/143715.jpg",synopsis:"يعيش تايو أسانو بجوار عائلة يوزاكورا الغامضة، ويقع في حب موتسومي ابنة العائلة. يتزوجها ليكتشف أن عائلتها سلالة جواسيس، وأنه بحاجة لخوض تدريب قاسٍ ليحميها. يبدأ تايو رحلة تعلّم في ظل إخوتها الغريبين الأطوار، في مزيج من التجسس والكوميديا العائلية والأكشن المتواصل."},
+{title_en:"Level 1 dakedo Unique Skill de Saikyou desu",title_ar:"مستوى 1 لكن بمهارة فريدة أنا الأقوى",main_character:"ريوتا ساتو",side_characters:"إميلي براون، سيليست، أليس",release_year:2023,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1579/136295.jpg",synopsis:"يستيقظ ريوتا ساتو في عالم غريب داخل متاهة، ويحصل على مهارة فريدة تسمح له بإسقاط مواد نادرة، لكن مستواه يبقى منخفضاً. يكتشف أن مهارته تجعله غنياً وقادراً على دعم الآخرين، فيستقر في بلدة ويبدأ العمل بمزرعة ومتجر. تتوسع علاقاته مع الفتيات والزوار، في فانتازيا مريحة عن قوة غير قتالية."},
+{title_en:"Sayounara Ryuusei, Konnichiwa Jinsei",title_ar:"وداعاً أيها التنين، أهلاً بالحياة",main_character:"دولان",side_characters:"سيلينا، كريستينا، ليتيشيا",release_year:2024,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1225/144606.jpg",synopsis:"كان دولان تنيناً قديماً عاش آلاف السنين، حتى قتله بطل ووُلد من جديد في جسد بشري. يقرر دولان أن يعيش حياة بشرية هادئة في قرية، لكنه ينجذب لإنقاذ فتاة نصف أفعى تُدعى سيلينا. يتعرف على العالم من زاوية جديدة ويقاتل بقايا وحوش وأعداء، في فانتازيا عن التغيير والتعايش والحب بعد الفقد."},
+{title_en:"Kimi wa Meido-sama",title_ar:"أنتِ الخادمة",main_character:"هيتويوشي يوكويا",side_characters:"يوكي (شيويه)، أغاري، ريكو",release_year:2024,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1909/144684.jpg",synopsis:"كانت يوكي قاتلة محترفة عاشت حياتها في خدمة سيدها، وبعد وفاته تجد نفسها بلا هدف وتُسقطها المصادفة أمام باب منزل هيتويوشي يوكويا. يتبنى هيتويوشي الفتاة الغريبة ويشغلها كخادمة، فتحاول يوكي تعلّم مهارات البيت والحياة اليومية من الصفر. تواجه مواقف كوميدية وتنمو علاقتهما ببطء، في قصة عن الشفاء والعائلة."},
+{title_en:"DanMachi (Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka)",title_ar:"دانماتشي: هل من الخطأ البحث عن اللقاء في الزنزانة؟",main_character:"بيل كرانيل",side_characters:"هيستيا، آيس والينشتاين، ليلي، ويلف",release_year:2015,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1172/148981.jpg",synopsis:"ينزل بيل كرانيل إلى المتاهة الضخمة تحت مدينة أوراريو، ليحقق حلمه في أن يصبح مغامراً ويُعرف بأنه بطل. تُدير إلهته هيستيا حزبه الصغير، ويُعجب بيل بالفتاة القوية آيس ويطارد خطاها. يواجه بيل وحوشاً مرعبة وتحديات فوق مستواه، في قصة فانتازيا مشهورة عن الشجاعة والنمو والولاء."},
+{title_en:"Rewrite",title_ar:"ريويت",main_character:"كوتارو تينؤوجي",side_characters:"كاغاري، كوتوري كانبي، تشيهايا أوهتوري، أكاني سينري",release_year:2016,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/9/80243l.jpg",synopsis:"يعيش كوتارو تينؤوجي حياة مدرسية عادية بينما يجمع طاقة سحرية بهدوء، إلى أن ينكشف له أن العالم يتجه إلى الانهيار. تظهر أمامه الفتاة الغامضة كاغاري وتخبره أن الأرض تحتاج إلى منقذ، فيجد نفسه بين فصائل متصارعة تحاول تغيير المصير. يقاتل كوتارو لاختيار الطريق الأصعب، في قصة خارقة للطبيعة ذات فروع متشابكة."},
+{title_en:"Mob kara Hajimaru Tansaku Eiyuutan",title_ar:"من الغوغاء إلى أسطورة استكشاف",main_character:"كايتو تاكاغي",side_characters:"سيلفي، لوسيريا، هاروكا",release_year:2024,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1578/143664.jpg",synopsis:"يعيش كايتو تاكاغي حياة طالب عادي طامحاً للربح من صيد الوحوش الصغيرة في زوايا المتاهات. في إحدى المهام يحصل على بطاقة نادرة تسمح له باستدعاء محاربة من عالم آخر، فيتغير مساره بالكامل. يصبح كايتو مغامراً متزايد القوة، ويجمع حوله رفاقاً، في قصة فانتازيا حديثة عن الصعود من الظل إلى البطولة."},
+{title_en:"Netoge no Yome wa Onnanoko ja Nai to Omotta",title_ar:"زوجتي في اللعبة ليست فتاة؟",main_character:"هيديكي نيشيمورا (روسيان)",side_characters:"أكو تاماكي، كيو غوشوؤين، ناناكو أكياما، أكاني سيغاوا",release_year:2016,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/3/79414.jpg",synopsis:"يُخدع هيديكي نيشيمورا في لعبة أونلاين بزوجة افتراضية تظهر أنه فتى، فينسحب من اللعبة مكسوراً. تنجح معلمته في إعادته عبر نقابة صغيرة، ليكتشف أن أعضاءها فتيات في صفه الحقيقي. تحاول الفتيات جعله يتزوج إحداهنّ في اللعبة والواقع، في كوميديا رومانسية عن الفصل بين العالمين."},
+{title_en:"Yuusha, Yamemasu",title_ar:"سأستقيل من البطولة",main_character:"ليو ديمونهارت",side_characters:"إكيدنا، ليلي، ميرنيس، شوتينا",release_year:2022,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1369/123738l.jpg",synopsis:"يهزم ليو ديمونهارت سيد الشياطين ويصبح بطلاً، لكن البشر يبدأون بتجاهله ويحاولون التخلص منه. فيقرر ليو التوجه إلى قلعة الشياطين والعمل لدى من هزمهم، ويكتشف أنهم بحاجة إلى مدير أعمال ماهر. يساعد ليو جيش الشياطين على النهوض بأفكار إدارية، في كوميديا فانتازية عن العمل والانتماء."},
+{title_en:"Princess Connect! Re:Dive",title_ar:"برينسيس كونيكت! ري:دايف",main_character:"يوكي",side_characters:"بيكورين، كوكّورو، كاريال",release_year:2020,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1810/106070.jpg",synopsis:"يستيقظ شاب بلا ذكريات في عالم مليء بالسحر والوحوش، وتنقذه فتاة جائعة تدعى بيكورين مع رفيقتها كوكّورو. يضمه الفريق إلى نقابة صغيرة ويسمونه يوكي، ويسعون معاً لتحسين حياتهم اليومية. يخوض الثلاثي مغامرات ومآدب وأزمات متتالية، في فانتازيا كوميدية مريحة عن الصداقة والبحث عن الذات."},
+{title_en:"Uzaki-chan wa Asobitai",title_ar:"أوزاكي تريد أن تلعب",main_character:"شينيتشي ساكوراي",side_characters:"هانا أوزاكي، تسوكي أوزاكي، آمي أساي، إيتسوهيتو ساكاكي",release_year:2020,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1540/108292.jpg",synopsis:"تكتشف هانا أوزاكي أن زميلها السابق شينيتشي ساكوراي أصبح منعزلاً وعبوساً في الجامعة، فتقرر التدخل بلا رحمة لسحبه إلى الحياة الاجتماعية. تلاحقه في كل مكان وتضايقه حتى يشاركها أنشطتها، بينما يبدو هو متضايقاً لكنه يستمتع فعلاً. تتطور مشاعرهما تحت السخرية، في كوميديا رومانسية عن الخروج من العزلة."},
+{title_en:"Solo Leveling",title_ar:"سولو ليفلينغ",main_character:"سونغ جين وو",side_characters:"تشا هاي إن، يو جين هو، سونغ جين آه، بيرو",release_year:2024,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1926/140799.jpg",synopsis:"في عالم تحولت فيه بوابات الوحوش إلى واقع يومي، يصبح سونغ جين وو أصغر صائد في كوريا وأضعفهم بلا موهبة. بعد حادثة شبه مميتة داخل زنزانة مزدوجة، يستيقظ بنظام غامض يمنحه القدرة على التطور بلا حدود. يبدأ جين وو صعوده من الصفر إلى أقوى صائد، في أكشن قوي عن الطموح والسلطة."},
+{title_en:"Mushoku Tensei: Isekai Ittara Honki Dasu",title_ar:"موشوكو تينسي: لو انتقلت لعالم آخر سأبذل قصارى جهدي",main_character:"روديوس غرايرات",side_characters:"سيلفيت، روكسي ميغورديا، إيريس بورياس غرايرات، بول غرايرات",release_year:2021,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1530/117776.jpg",synopsis:"يُقتل رجل ياباني بلا هدف ويُولد من جديد في عالم سحري باسم روديوس غرايرات، محتفظاً بذكريات حياته السابقة. يقرر هذه المرة أن يعيش بجدية، فيتدرّب على السحر منذ طفولته ويتفوق بسرعة مرعبة. يخوض روديوس رحلة طويلة مليئة بالمغامرات والأخطاء والعلاقات، في قصة عن النمو والندم والفرص الثانية."},
+{title_en:"Maougun Saikyou no Majutsushi wa Ningen datta",title_ar:"أقوى ساحر في جيش سيد الشياطين كان بشرياً",main_character:"آيك",side_characters:"سيفيرو، سيد الشياطين دايروكوتين، ليليا",release_year:2024,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1814/143744.jpg",synopsis:"يقود آيك، أقوى ساحر في جيش سيد الشياطين، حملات عسكرية بذكاء وحسم، لكنه يخفي سراً خطيراً: إنه بشري. يخشى أن ينكشف أمره فيُطرد من الجيش، فيبذل جهداً مضاعفاً لتحقيق الانتصارات. تتوطد علاقته بالجنود والوحوش وبسيد الشياطين نفسه، في فانتازيا حربية عن الهوية والولاء."},
+{title_en:"Isekai de Cheat Skill wo Te ni Shita Ore wa",title_ar:"حصلت على مهارة غش في عالم آخر",main_character:"يوويا تينجو",side_characters:"ليكسيا فون ألسيريا، كاوري هوؤوجو، ميو، لونا",release_year:2023,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1795/133408l.jpg",synopsis:"يعيش يوويا تينجو حياة بائسة كطالب سمين مُتنمَّر عليه، حتى يجد باباً في منزل جده ينقله بين اليابان وعالم سحري. في العالم الآخر يكتسب قوة وجسداً مثالياً ومهارات خارقة، ثم يعود إلى اليابان بالتحول نفسه. يوازن يوويا بين مدرسته ومغامراته، في قصة عن الثقة والتحول والنجاح المفاجئ."},
+{title_en:"Kami-tachi ni Hirowareta Otoko",title_ar:"برعاية الآلهة",main_character:"ريوما تاكيباياشي",side_characters:"إلياريا جاميل، راينهارت جاميل، ميا، غين",release_year:2020,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1654/108801.jpg",synopsis:"يموت ريوما تاكيباياشي وحيداً في مكتبه، فتعيده ثلاث آلهة إلى الحياة في عالم آخر كطفل وتمنحه بركات في السحر والترويض. يعمل ريوما في تنظيف الأحياء ويستخدم أسلوبه الهادئ في ترويض الوحوش، فيصبح محبوباً من الجميع. يبني ريوما حياة مستقرة مع عائلته الجديدة، في فانتازيا مريحة عن اللطف والرعاية."},
+{title_en:"Shin Shinka no Mi",title_ar:"ثمرة التطور (الجزء الثاني)",main_character:"سِييتشي هيراغي",side_characters:"ساريا، آل، روروني، لويز",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1862/128297l.jpg",synopsis:"يكتسب سِييتشي هيراغي قوة هائلة بلا شكل بعد أن أكل فاكهة غريبة، ثم يخوض مغامرات مع رفيقاته لمواجهة قوى تهدد العالم. يحاول سِييتشي الحفاظ على هدوئه وسط جنون الموقف، بينما تستمر قدراته المبالغ فيها في الظهور. يواجه حكماً ومخلوقات أسطورية، في فانتازيا كوميدية عن قوة عشوائية وشخصية خجولة."},
+{title_en:"Hyakuren no Haou to Seiyaku no Valkyria",title_ar:"سيد راغناروك والعقد مع الفالكيري",main_character:"يووتو سوؤوه",side_characters:"فيليسيا، لينيا، ألبرتينا، إيفيل",release_year:2018,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1585/95225.jpg",synopsis:"يُختطف يووتو سوؤوه إلى عالم آخر ويصبح زعيم قبيلة حربية تُدعى وولف كران، محاطاً بمحاربات يقدّسن القوة. يحاول يووتو نقل أفكاره الحديثة إلى القبيلة لتفوز في حروبها ضد جيران أقوى. يبني تحالفاته ويقود المعارك، في قصة فانتازيا حربية عن القيادة والتخطيط والولاء القبلي."},
+{title_en:"Kawaii dake ja Nai Shikimori-san",title_ar:"شيكيموري ليست لطيفة فقط",main_character:"إيزومي يوو",side_characters:"مياكو شيكيموري، كاميا، إينوزوكا، نيكوزاكي",release_year:2022,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1995/121695.jpg",synopsis:"يعيش إيزومي يوو حياة سيئة الحظ تصيبه بمخاطر عشوائية، لكن حبيبته مياكو شيكيموري تحميه بسرعة وبراعة. في المدرسة تبدو شيكيموري لطيفة ورقيقة، لكنها في المواقف تتحول إلى بطلة قوية وجدية. يواجه الاثنان معاً مواقف مضحكة ومحرجة، في رومانسية كوميدية عن الحب والتقدير المتبادل."},
+{title_en:"Maou Gakuin no Futekigousha",title_ar:"غير المناسب في أكاديمية سيد الشياطين",main_character:"أنوس فولديغواد",side_characters:"ميشا نيكرون، ساشا نيكرون، ميسا، إليونور",release_year:2020,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1394/132755l.jpg",synopsis:"يُعاد سيد الشياطين أنوس فولديغواد إلى الحياة بعد ألفي عام من وفاته، فيجد عالم الشياطين قد تغيّر وأصبح سلالة ضعيفة. يلتحق بأكاديمية سيد الشياطين ليثبت أنه الأقوى رغم تصنيفه غير مناسب. يحطم أنوس كل قواعد السحر بقدرات خارقة، في فانتازيا أكشن عن العظمة والتحقير بالقواعد."},
+{title_en:"Noumin Kanren no Skill bakka Agetetara Nazeka Tsuyoku Natta",title_ar:"عندما رفعت مهارات الزراعة أصبحت قوياً",main_character:"آل وين",side_characters:"فال، هيلين، إيليا، ريفي",release_year:2022,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1384/127328.jpg",synopsis:"يعمل آل وين على تطوير مهارات الزراعة والحرث لسنوات، فيكتشف فجأة أن تلك المهارات تمنحه قوة قتالية غير طبيعية. يبدأ آل بجني محصوله ومواجهة الوحوش التي تهدد المزارع، ويصبح مزارعاً مقاتلاً لا يُستهان به. يجمع آل حوله رفاقاً ويبني سمعة غريبة، في فانتازيا كوميدية عن المهارات المهمَلة."},
+{title_en:"Tondemo Skill de Isekai Hourou Meshi",title_ar:"طبخ التجوال في عالم آخر بمهارة مذهلة",main_character:"تسويوشي موكوودا",side_characters:"فيل، سوي، دورا، نينرير",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1661/131889.jpg",synopsis:"يُستدعى تسويوشي موكوودا إلى عالم آخر مع قدرة على شراء مواد من اليابان، ويكتشف أن مهارته الحقيقية هي الطبخ. يجذب طبق واحد منه الوحش الأسطوري فيل الذي يوقّع عقداً معه ويصبح رفيقه المخلص. يطبخ تسويوشي لأقوياء العالم في مقابل حمايته، في فانتازيا مريحة عن الطعام والرفقة."},
+{title_en:"The Beginning After the End",title_ar:"البداية بعد النهاية",main_character:"آرثر لايوين (غراي)",side_characters:"سيلفيا، تيسيا إيراليث، إيلي، رينولدز",release_year:2025,season:"ربيع",cover_url:"https://cdn.myanimelist.net/s/common/uploaded_files/1729358769-1b132be476eaf9dd5cdb01984c257938.jpeg",synopsis:"يُولد الملك المحارب غراي من جديد في عالم مليء بالسحر باسم آرثر لايوين، محتفظاً بذكريات حياة كاملة وخبرة قتالية هائلة. يتدرّب منذ طفولته ليتقن السحر والقتال ويصبح أقوى مما كان، ويجذب انتباه معلمين وأعداء معاً. يخوض آرثر رحلة نمو وتحديات عائلية وسياسية، في قصة فانتازيا ملحمية عن الولادة الجديدة."},
+{title_en:"Shiunji-ke no Kodomotachi",title_ar:"أطفال عائلة شيونجي",main_character:"أراتا شيونجي",side_characters:"كوتونو، كانامي، أوكا، سِيها، بانري، شيون",release_year:2025,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1955/148360.jpg",synopsis:"ينتمي أراتا شيونجي إلى أسرة ميسورة يعيش فيها سبعة أشقاء، وتنكشف مفاجأة: لا تجمعهم روابط دم فعلية. تتغير العلاقات داخل المنزل بسرعة، وتظهر مشاعر رومانسية بين أراتا وأخواته المختلفات تماماً. تتحول الحياة الهادئة إلى صراع قلوب، في رومانسية عائلية كوميدية عن العلاقات المتشابكة."},
+{title_en:"Isshun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",title_ar:"المعالج العبقري المطرود الذي أصبح معالجاً مظلماً",main_character:"زينوس",side_characters:"ليلي، كارميلا، رينا",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1211/147335.jpg",synopsis:"يُطرد زينوس، المعالج الذي كان يعالج الناس بلمسة واحدة، لأن الجميع يراه بلا قيمة ما دامت قدراته لا تعمل إلا في اللحظات الأخيرة. يقرر زينوس أن يصبح معالجاً مظلماً ويعيش بحرية بعيداً عن الغطرسة. يجمع رفاقاً ويُظهر قوة شفاء تجعل الأعداء يخشونه، في فانتازيا عن الطرد وإثبات الذات."},
+{title_en:"Danjo no Yuujou wa Seiritsu suru? (Iya, Shinai!!)",title_ar:"هل تصمد صداقة الفتى والفتاة؟ (لا، لن تصمد!)",main_character:"يوو ناتسومي",side_characters:"هيماري إينوزوكا، ريون إنوموتو، إيبوكي",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1429/150067.jpg",synopsis:"يقرر يوو ناتسومي وهيماري إينوزوكا أن يبقيا صديقين فقط مهما حدث، ويوقعان اتفاقاً صارماً بذلك. لكن القرب اليومي والغيرة تضعان الاتفاق في مهب الريح، فيتظاهر كل منهما بالبرود أمام الآخر. تتوالى المواقف المحرجة والأقارب المتطفلون، في رومانسية كوميدية عن الصداقة التي تتحول إلى حب."},
+{title_en:"Kanchigai no Atelier Meister",title_ar:"صانع الأدوات المُفهَم خطأً",main_character:"يوت",side_characters:"فلام، سيلين، كيكيو، كارين",release_year:2025,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1743/148272.jpg",synopsis:"يسوء فهم يوت من الجميع على أنه صانع أدوات لا قيمة له، فيُطرد من فريقه ويلتقي برفيقيه الجديدين. لكن يوت يكتشف أنه قادر على صنع أدوات معجزات فعلياً، فيبدأ ببناء ورشة خاصة وتنفيذ طلبات مستحيلة. تنتشر سمعته بسرعة وتطارده نقابات وممالك، في فانتازيا كوميدية عن سوء الفهم المفيد."},
+{title_en:"Amagami-san Chi no Enmusubi",title_ar:"عقدة عائلة أماغامي",main_character:"أوريو كاميهاتي",side_characters:"ياي، أساهي، يونا أماغامي",release_year:2024,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1410/143586.jpg",synopsis:"يشترط جدّ أوريو كاميهاتي أن يسكن في معبد للراهبات ويحصل على منحة، لكن بشرط أن يتزوج إحدى حفيداته الثلاث. يواجه أوريو ثلاثة خيارات متناقضة: الراهبة الهادئة، والحادة، والمرحة، فيفشل في الاختيار. يتعرف على كل منهنّ وسط طقوس المعبد، في رومانسية كوميدية عن الاختيار والالتزام."},
+{title_en:"Izure Saikyou no Renkinjutsushi?",title_ar:"خيميائي سيصبح الأقوى؟",main_character:"تاكومي إيروما",side_characters:"كايدي، ماريا، نورا",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1431/146222.jpg",synopsis:"يجد تاكومي إيروما نفسه في غابة بعد استدعاء خاطئ، ويقرر أن يعيش حياة هادئة بعيداً عن الأضواء. يكتشف موهبة نادرة في الخيمياء تسمح له بخلق أشياء تفوق الخيال، فيبدأ بتقديم المساعدة للقرى المحيطة. تتوسع شهرته رغم إرادته، في فانتازيا مريحة عن الحرفة والقوة المتزايدة."},
+{title_en:"Hazure Skill \"Kinomi Master\"",title_ar:"مهارة عديمة الفائدة: سيد الفواكه",main_character:"إيتسوكي",side_characters:"ليل، رينا",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1703/146128.jpg",synopsis:"يحصل إيتسوكي على مهارة تُصنّف بأنها عديمة الفائدة: إتقان الفواكه، فيسخر منه الجميع ويُترك وحيداً. لكنه يكتشف أن المكسرات والفواكه التي يجمعها تمنح قوة وقدرات استثنائية، فيبدأ بالتطور بسرعة غير متوقعة. يجمع إيتسوكي رفاقاً ويواجه تهديدات أكبر، في فانتازيا عن المهارات المُستصغرة وقيمتها الحقيقية."},
+{title_en:"Class no Daikirai na Joshi to Kekkon suru Koto ni Natta.",title_ar:"تزوجت من الفتاة التي أكرهها في صفي",main_character:"سايتو هوؤوجو",side_characters:"أكاين يوميساكي، هيماري، ماهو",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1775/147330.jpg",synopsis:"يجد سايتو هوؤوجو نفسه مجبراً على الزواج من أكاين يوميساكي، الفتاة التي يكرهها أكثر من أي شيء في صفه. يتزوج الاثنان بترتيب من عائلتيهما ويبدآن حياة مشتركة مليئة بالخلافات والمعارك اليومية. يكتشفان تدريجياً صفات مخفية لدى كل منهما، في رومانسية كوميدية عن العداء الذي يصبح حباً."},
+{title_en:"Nihon e Youkoso Elf-san.",title_ar:"أهلاً بك في اليابان أيتها الإلف",main_character:"كازوهيرو كيتاسي",side_characters:"ماري، ميوي، آيكو",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1650/146113.jpg",synopsis:"يسافر كازوهيرو كيتاسي كل ليلة إلى عالم آخر في نومه، وهناك يلتقي بالفتاة الإلف ماري ويتناول معها الطعام. في إحدى المرات يعيدها معه إلى اليابان بالخطأ، فتبدأ ماري باكتشاف ثقافة جديدة وعجائب المدن. يعيش الاثنان مغامرات يومية بين العالمين، في قصة فانتازية خفيفة عن الانبهار والضيافة."},
+{title_en:"Witch Watch",title_ar:"ووتش ووتش",main_character:"موريهيتو أوتوغي",side_characters:"نيكو واكاتسوكي، كييغو ماغامي، كانشي كازاماتسوري، ميهارو كيريغايا",release_year:2025,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1526/150689.jpg",synopsis:"يُوكل إلى موريهيتو أوتوغي حماية زميلته نيكو واكاتسوكي، الراهبة الساحرة التي لا تتحكم بسحرها جيداً. ينتقل موريهيتو للعيش قربها ليراقبها، فيدخل عالم النقابة والسحر والمخلوقات الغريبة. يواجه الاثنان مهامّ متعددة مع رفاق من النقابة، في كوميديا سحرية مدرسية مليئة بالمشاهد العبثية والقتال."},
+{title_en:"Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga",title_ar:"حالة القاتل أقوى من البطل بوضوح",main_character:"كوداي أوهارا",side_characters:"أماني، ليليا، رينا",release_year:2025,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1276/151118.jpg",synopsis:"يُستدعى كوداي أوهارا إلى عالم آخر لكنه لا يظهر له أي قدرات في البداية، فيقرر أن يخفي مهاراته الحقيقية. يكتشف أنه يمتلك قدرات قاتل مظلم لا تقهر، فيصبح أداة يستخدمها من حوله بجهل. يواجه كوداي مهام اغتيال وأعداء أقوياء، في فانتازيا أكشن عن القوة المخفية والتلاعب."},
+{title_en:"Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 no Nakama-tachi wo Te ni Irete...",title_ar:"الخيانة في الزنزانة ومهارة الغاتشا اللانهائية",main_character:"لايت أركرايت",side_characters:"إيما، نورا، لونا",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1163/151246.jpg",synopsis:"يُخان لايت أركرايت مع رفاقه في عمق زنزانة ويُترك للموت، لكنه يحصل على مهارة غاتشا لا نهائية ويستدعي جيشاً من فتيات أسطوريات. يبدأ لايت ببناء قوة هائلة للانتقام من الخائنين وإنقاذ من يستحق. يواجه سلالات الوحوش وممالك البشر، في قصة فانتازيا أكشن عن الخيانة والقوة المكتسبة."},
+{title_en:"Somali to Mori no Kamisama",title_ar:"سومالي وروح الغابة",main_character:"الغول الحارس",side_characters:"سومالي، أوزوي، هايتورا، كيكيلا",release_year:2020,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1938/102796.jpg",synopsis:"في عالم يطارده البشر، تهرب الفتاة الصغيرة سومالي من جنسها مع غول حكيم يعمل حارساً للغابة. يقرر الغول أن يعيدها إلى والديها ويسافر معها عبر أراضٍ خطيرة، بينما يخفي حقيقة أن البشر مكروهون. يجمع الاثنان رفقاء ويواجهان ماضياً مؤلماً، في رحلة مؤثرة عن الأبوة والرحمة."},
+{title_en:"Uchi no Ko no Tame naraba, Ore wa Moshikashitara Maou mo Taoseru kamo Shirenai.",title_ar:"من أجل ابنتي قد أهزم سيد الشياطين",main_character:"دايل",side_characters:"لاتينا، ريتا، كينيث",release_year:2019,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1568/101203.jpg",synopsis:"يجد المغامر دايل طفلة نصف شيطانة تُدعى لاتينا مهجورة في غابة، فيقرر تربيتها بنفسه رغم كل الصعوبات. يترك دايل حياة المغامرة ويستقر في بلدة ليعمل ويكون أباً صالحاً، ويتعلم مهارات الطبخ والرعاية. يواجه الاثنان نظرة المجتمع والوحوش معاً، في قصة عائلية دافئة عن الحب والمسؤولية."},
+{title_en:"Tomo-chan wa Onnanoko!",title_ar:"تومو-تشان فتاة!",main_character:"تومو أيزاوا",side_characters:"جونيتشيرو كوبوتا، ميسوزو غوندو، كارول أولستون",release_year:2023,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1444/131828.jpg",synopsis:"تنمو تومو أيزاوا قوية وصلبة كفتى بين الأولاد، وتقع في حب صديق طفولتها جونيتشيرو الذي يراها أخاً له. تحاول تومو بكل طرقها الخرقاء أن تُفهم كفتاة، بينما يبقى جونيتشيرو غافلاً تماماً. تتورط صديقتها ميسوزو في التخطيط، في كوميديا رومانسية عن الهوية والاعتراف المتأخر."},
+{title_en:"Mamahaha no Tsurego ga Motokano datta",title_ar:"أخت زوجة أبي كانت حبيبتي",main_character:"ميزوتو إيريدو",side_characters:"يومي إيريدو، أكاتسوكي مينامي، كوغوري",release_year:2022,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1708/123281.jpg",synopsis:"ينفصل ميزوتو ويومي إيريدو بعد علاقة في المتوسطة، ثم يجتمعان بالصدفة حين يتزوج والدهما ووالدتها. يعيشان في منزل واحد كأخوين غير شقيقين ويتظاهران بالبرود، مع قواعد صارمة لتجنب الاحتكاك. تنكشف ذكريات الماضي تدريجياً، في رومانسية كوميدية عن الحب الذي لم ينتهِ."},
+{title_en:"Kimi to Koete Koi ni Naru",title_ar:"عبور الحدود معك يصبح حباً",main_character:"كوسكي",side_characters:"يورو، أريسو، رين",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1810/153334.jpg",synopsis:"يستطيع كوسكي رؤية الأرواح منذ حادث قديم، ويقضي أيامه متجنباً الارتباط بالآخرين خوفاً من الفقد. ثم يلتقي بفتاة شبح تُدعى يورو تحتاج مساعدته لتجاوز حدود عالمها، فيقرر مساعدتها. تتعمق علاقتهما بينما يحاول إعادتها إلى الحياة، في رومانسية خارقة للطبيعة عن الحدود والفقد."},
+{title_en:"Chanto Suenai Kyuuketsuki-chan",title_ar:"مصاصة الدماء التي لا تُحسن المص",main_character:"ريليا",side_characters:"يوما، ساكي",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1888/151887.jpg",synopsis:"تحاول ريليا، مصاصة الدماء الشابة، أن تعيش بين البشر لكنها تفشل تماماً في مهاراتها اليومية ومصّ الدم. يعتني بها يوما، زميلها الهادئ، ويساعدها على تجاوز إخفاقاتها المتكررة. تحاول ريليا إثبات أنها مصاصة دماء محترمة، في كوميديا رومانسية خفيفة عن التعلّم والاعتماد."},
+{title_en:"Uchi no Kaisha no Chiisai Senpai no Hanashi",title_ar:"حديث السينباي الصغيرة في شركتنا",main_character:"شينوزاكي",side_characters:"السينباي كوكونويه، آيكو، كيسوكي",release_year:2023,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1984/136274.jpg",synopsis:"يبدأ شينوزاكي عمله في شركة جديدة، ويكتشف أن السينباي التي يشرف عليها صغيرة الحجم ومرحة ولطيفة. تحاول السينباي أن تبدو قدوة محترمة أمامه لكنها تفشل في كل مرة بمواقف محرجة. تتوطد علاقتهما داخل المكتب، في كوميديا رومانسية عن بيئة العمل والحياة اليومية."},
+{title_en:"Mizu Zokusei no Mahoutsukai",title_ar:"ساحر الماء",main_character:"ريوما سيريزاوا",side_characters:"ليليان، سيليست، آبل",release_year:2025,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1383/151072.jpg",synopsis:"يُعاد ريوما سيريزاوا إلى الحياة في عالم آخر بعد أن ألقت به الآلهة في بحيرة، ويصبح ساحر ماء بقوة هائلة. يختار ريوما حياة حرّة بعيداً عن النبلاء والممالك، ويستقر في قرية حدودية بعيدة. تتوسع حياته مع أصدقاء ووحوش وصعوبات، في فانتازيا عن القوة الهادئة والاستقلال."},
+{title_en:"Monster Musume no Iru Nichijou",title_ar:"حياة يومية مع فتيات الوحوش",main_character:"كيميهيتو كوروسو",side_characters:"مييا، بابي، سينتوريا، راخنيرا",release_year:2015,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/9/75104.jpg",synopsis:"يُصبح كيميهيتو كوروسو مضيفاً رسمياً لمخلوقات أنصاف البشر بعد برنامج تبادل ثقافي، فيجد منزله مليئاً بفتيات من أنواع مختلفة. كل فتاة تريد نيل قلبه بطرقها الخاصة، والمنافسة تحتدم يومياً. يواجه كيميهيتو قواعد صارمة وحوادث متكررة، في كوميديا حريم عن التعايش والفروق الثقافية."},
+{title_en:"Mayonaka Heart Tune",title_ar:"لحن القلب في منتصف الليل",main_character:"يوتا",side_characters:"أريسو، ميكو، ساكي",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1769/152823.jpg",synopsis:"يجد يوتا نفسه منجذباً إلى الفتاة الهادئة في نادي الموسيقى بمدرسته، ويقرر الاقتراب منها عبر تعلّم العزف. تتحول البروفات الليلية إلى مساحة للبوح والمشاعر المترددة بينهما. تنمو علاقتهما مع أصدقاء النادي والمنافسات الصغيرة، في رومانسية مدرسية موسيقية هادئة عن الاقتراب."},
+{title_en:"Isekai Shikkaku",title_ar:"لم يعد مسموحاً لي في عالم آخر",main_character:"الكاتب (أوسامو دازاي)",side_characters:"ساشان (أنيت)، تاما، نير",release_year:2024,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1252/143457.jpg",synopsis:"يُغرق الكاتب الياباني أوسامو دازاي نفسه في نهر ويستيقظ في عالم آخر مليء بالوحوش والسحر، فيحاول إيجاد طريقة للعودة. يعتني به فريق من الشخصيات الغريبة، بينما يتصرف هو ببرود كاتب محبط يبحث عن نهاية مثالية. يخوض معارك ضارية بلا اهتمام، في كوميديا فانتازية ساخرة عن العبث والكتابة."},
+{title_en:"Hell Mode",title_ar:"هيل مود",main_character:"آلن",side_characters:"سيسيل، دوغورا، كرينا، صوفي",release_year:2026,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1151/152479.jpg",synopsis:"يختار ألن أن يلعب لعبة بأقصى درجات الصعوبة مع قدرة استدعاء وحوش، فيجد نفسه في عالم لا يرحم. يتدرّب منذ طفولته مع رفاقه على القتال والتخطيط، ويبني جيشاً من الوحوش المستدعاة. يواجه ألن اختبارات قاسية وأعداء أقوى من مستواه، في قصة عن الاستراتيجية والصبر والنمو."},
+{title_en:"Yuusha Party ni Kawaii Ko ga Ita node, Kokuhaku shitemita.",title_ar:"لأن في فريق الأبطال فتاة لطيفة حاولت الاعتراف",main_character:"راي",side_characters:"ميكو، ساكي، نانا",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1573/152828.jpg",synopsis:"يقرر راي، عضو فريق البطل، أن يعترف بحبه لزميلته اللطيفة في الفريق رغم الفارق الهائل في القوة. يبدأ الاثنان مواعدة حذرة وسط مهام قتالية خطيرة وضغوط الفريق. يواجه راي صعوبة في مواكبة مستواها، في رومانسية فانتازية عن الحب بين أبطال غير متكافئين."},
+{title_en:"A-Rank Party wo Ridatsu shita Ore wa, Moto Oshiego-tachi to Meikyuu Shinbu wo Mezasu.",title_ar:"تركت الفريق من الفئة A لأهداف أعماق المتاهة",main_character:"يوكي",side_characters:"مارينا، سيلك، راين",release_year:2025,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1897/149800.jpg",synopsis:"يترك يوكي فريقه من الفئة A بعد سنوات من الإهمال، ويؤسس فريقاً جديداً مع ثلاث فتيات كنّ تلميذاته. يتجه الفريق الجديد نحو أعماق المتاهة هدفاً لإثبات الذات، ويتدرب بقسوة على التنسيق. تواجه المجموعة وحوشاً مرعبة وأعضاء الفريق القديم، في قصة فانتازيا عن الاستقلال والثأر المهني."},
+{title_en:"Kami no Tou (Tower of God)",title_ar:"برج الإله",main_character:"بام (الخامس والعشرون)",side_characters:"رايتشل، خون أغويرو أغنيس، راك رايثرايزر، إندورسي",release_year:2020,season:"ربيع",cover_url:"https://cdn.myanimelist.net/images/anime/1702/106229.jpg",synopsis:"تُفتح أبواب البرج الغامض أمام رايتشل لتتسلقه، فيتبعها بام بلا تردد رغم جهله بكل شيء. داخل البرج يخضع بام لاختبارات قاسية ويتعرف على رفاق مختلفين، بينما يكتشف قوة غريبة تسكن داخله. تتصاعد الأسرار حول البرج ورايتشل، في قصة أكشن وفانتازيا عن الصعود والخيانة."},
+{title_en:"Class de 2-banme ni Kawaii Onnanoko to Tomodachi ni Natta",title_ar:"صرت صديقاً لثاني أجمل فتاة في الصف",main_character:"كوتا",side_characters:"أومامي، رين، ماهو",release_year:2025,season:"خريف",cover_url:"https://cdn.myanimelist.net/images/anime/1423/155713.jpg",synopsis:"يقرّب كوتا، الطالب الهادئ، من زميلته الجميلة التي تُصنّف ثانية أجمل فتاة في الصف، وتبدأ بينهما صداقة غير متوقعة. تخفي الفتاة جانباها الحقيقية أمام الجميع وتظهر على طبيعتها معه فقط. يحاول كوتا فهمها والتعامل مع مشاعر تتشكل ببطء، في رومانسية مدرسية عن الصداقة والأصالة."},
+{title_en:"Tsuihousha Shokudou e Youkoso!",title_ar:"مرحباً بكم في مطعم المنبوذين",main_character:"دينيس",side_characters:"أتيلير، لانسيلوت، إيلينا",release_year:2025,season:"صيف",cover_url:"https://cdn.myanimelist.net/images/anime/1313/149355.jpg",synopsis:"يُطرد دينيس من حزبه بعد أن قرر الجميع أن مهاراته في الطبخ لا قيمة لها، فيتجه إلى فتح مطعم صغير. يكتشف أن أطباقه تحمل تأثيرات سحرية مذهلة وتجذب المغامرين والوحوش والمشاهير. تتوسع سمعته وتطارده أسرار ماضيه، في فانتازيا مريحة عن الطعام والثأر اللذيذ."},
+{title_en:"Saikyou Tank no Meikyuu Kouryaku",title_ar:"استراتيجية أقوى دبابة في المتاهة",main_character:"رود",side_characters:"نين، ليليا، مانيسيا",release_year:2024,season:"شتاء",cover_url:"https://cdn.myanimelist.net/images/anime/1384/140829.jpg",synopsis:"يُطرد رود، أقوى درع في حزبه، لأن الجميع يرى أنه يعيق تقدّمهم، فيقرر العودة إلى قريته. هناك يكتشف أن مهاراته الدفاعية تمنح بركات نادرة لأهل قريته، فيبدأ بتدريبهم وحمايتهم. تتوسع قريته بسرعة وتجذب الانتباه، في فانتازيا عن القيمة الحقيقية للدعم والحماية."}
+];
+
+/* ==================== الإعدادات ==================== */
+const SUPA_URL = 'https://tltjjxerdvcuxbqnkadz.supabase.co';
+const SUPA_KEY = 'sb_publishable__as2GAUW3rUTnU1XeEiuwA_j_AkWZqb';
+const TABLE = 'animes';
+const LS_META = 'animeArchive.meta.v2';
+
+let sb = null;
+try {
+  if (window.supabase && window.supabase.createClient) {
+    sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+  }
+} catch (e) { sb = null; }
+
+const cardsEl = document.getElementById('cards');
+const counterEl = document.getElementById('counter');
+const lastAddEl = document.getElementById('lastAdd');
+const statCount = document.getElementById('statCount');
+const statDate = document.getElementById('statDate');
+const msgEl = document.getElementById('msg');
+const connChip = document.getElementById('connChip');
+
+let rows = [];
+let live = false;
+let lastAdd = '';
+
+/* ==================== أدوات ==================== */
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function pad2(n){ return String(n).padStart(2,'0'); }
+function fmtDate(v){
+  if(!v) return '—';
+  const d = new Date(v);
+  if(isNaN(d.getTime())) return '—';
+  return pad2(d.getDate()) + '/' + pad2(d.getMonth()+1) + '/' + d.getFullYear() +
+         ' — ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+}
+function say(text, isErr){
+  msgEl.textContent = text || '';
+  msgEl.className = 'msg' + (isErr ? ' err' : '');
+  clearTimeout(say._t);
+  if(text) say._t = setTimeout(function(){ msgEl.textContent = ''; }, 6000);
+}
+function readMeta(){
+  try{ return JSON.parse(localStorage.getItem(LS_META) || '{}'); }catch(e){ return {}; }
+}
+function writeMeta(){
+  try{ localStorage.setItem(LS_META, JSON.stringify({ lastAdd: lastAdd })); }catch(e){}
+}
+function setConn(text){
+  connChip.textContent = 'حالة الاتصال: ' + text;
+}
+
+function stats(){
+  counterEl.textContent = rows.length;
+  statCount.textContent = rows.length;
+  lastAddEl.textContent = lastAdd ? fmtDate(lastAdd) : '—';
+  statDate.textContent = lastAdd ? fmtDate(lastAdd) : '—';
+}
+
+/* ==================== العرض ==================== */
+function cardEl(row, idx){
+  const el = document.createElement('article');
+  el.className = 'card';
+
+  const poster = document.createElement('div');
+  poster.className = 'poster';
+  const img = document.createElement('img');
+  img.loading = 'lazy';
+  img.alt = 'غلاف ' + (row.title_en || '');
+  img.src = row.cover_url || '';
+  img.addEventListener('error', function(){ poster.classList.add('broken'); });
+  if(!row.cover_url) poster.classList.add('broken');
+  const ph = document.createElement('div');
+  ph.className = 'ph';
+  ph.textContent = 'لا يوجد غلاف';
+  poster.appendChild(img);
+  poster.appendChild(ph);
+
+  const info = document.createElement('div');
+  info.className = 'info';
+
+  const head = document.createElement('div');
+  head.className = 'head';
+  head.innerHTML =
+    '<span class="num">' + pad2(idx + 1) + '</span>' +
+    '<div class="titles">' +
+      '<h2 class="en">' + esc(row.title_en) + '</h2>' +
+      '<p class="ar">' + esc(row.title_ar) + '</p>' +
+    '</div>';
+
+  const acts = document.createElement('div');
+  acts.className = 'acts';
+
+  const printBtn = document.createElement('button');
+  printBtn.type = 'button';
+  printBtn.className = 'mini';
+  printBtn.textContent = 'طباعة A4';
+  printBtn.addEventListener('click', function(){ printOne(el); });
+
+  const delBtn = document.createElement('button');
+  delBtn.type = 'button';
+  delBtn.className = 'mini del';
+  delBtn.textContent = 'حذف';
+  delBtn.addEventListener('click', function(){ removeRow(row); });
+
+  acts.appendChild(printBtn);
+  acts.appendChild(delBtn);
+  head.appendChild(acts);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.innerHTML =
+    '<span class="tag season">' + esc(row.season) + ' ' + esc(row.release_year) + '</span>' +
+    '<span class="tag">' + esc(row.release_year) + '</span>';
+
+  const cast = document.createElement('div');
+  cast.className = 'cast';
+  cast.innerHTML =
+    '<span><b>البطل الرئيسي:</b> ' + esc(row.main_character) + '</span>' +
+    (row.side_characters ? '<span><b>شخصيات ثانوية:</b> ' + esc(row.side_characters) + '</span>' : '');
+
+  const syn = document.createElement('p');
+  syn.className = 'syn';
+  syn.textContent = row.synopsis || '';
+
+  info.appendChild(head);
+  info.appendChild(meta);
+  info.appendChild(cast);
+  info.appendChild(syn);
+
+  el.appendChild(poster);
+  el.appendChild(info);
+  return el;
+}
+
+function render(){
+  cardsEl.innerHTML = '';
+  if(!rows.length){
+    const p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = 'الأرشيف فارغ حالياً — أضف عنواناً جديداً، أو استخدم زر الاستيراد لرفع القائمة المبدئية.';
+    cardsEl.appendChild(p);
+    stats();
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  rows.forEach(function(r, i){ frag.appendChild(cardEl(r, i)); });
+  cardsEl.appendChild(frag);
+  stats();
+}
+
+/* ==================== الطباعة ==================== */
+function printAll(){
+  document.body.classList.remove('printing-one');
+  setTimeout(function(){ window.print(); }, 60);
+}
+function printOne(card){
+  document.querySelectorAll('.card.print-target').forEach(function(c){ c.classList.remove('print-target'); });
+  card.classList.add('print-target');
+  document.body.classList.add('printing-one');
+  setTimeout(function(){ window.print(); }, 60);
+}
+window.addEventListener('afterprint', function(){
+  document.body.classList.remove('printing-one');
+  document.querySelectorAll('.card.print-target').forEach(function(c){ c.classList.remove('print-target'); });
+});
+
+/* ==================== قاعدة البيانات ==================== */
+function normalise(r){
+  return {
+    id: r.id,
+    cover_url: r.cover_url || '',
+    title_en: r.title_en || '',
+    title_ar: r.title_ar || '',
+    main_character: r.main_character || '',
+    side_characters: r.side_characters || '',
+    release_year: r.release_year == null ? '' : r.release_year,
+    season: r.season || '',
+    synopsis: r.synopsis || ''
+  };
+}
+
+async function loadFromDb(silent){
+  if(!sb){ setConn('غير متاح'); live = false; rows = SEED.slice(); render(); return; }
+  const res = await sb.from(TABLE).select('*');
+  if(res.error){
+    setConn('تعذّر الاتصال');
+    live = false;
+    if(!rows.length) rows = SEED.slice();
+    render();
+    if(!silent) say('تعذّر تحميل البيانات من السحابة: ' + res.error.message, true);
+    return;
+  }
+  const data = res.data || [];
+  if(!data.length){
+    live = true;
+    setConn('متصل — الجدول فارغ');
+    rows = SEED.slice();
+    render();
+    if(!silent) say('الجدول فارغ: تُعرض القائمة المبدئية. استخدم زر الاستيراد لرفعها إلى قاعدة البيانات.');
+    return;
+  }
+  live = true;
+  setConn('متصل');
+  rows = data.map(normalise);
+  render();
+  if(!silent) say('تم تحديث القائمة من قاعدة البيانات (' + rows.length + ' عنواناً).');
+}
+
+async function insertRows(list){
+  if(!sb) throw new Error('مكتبة Supabase غير محمّلة');
+  const payload = list.map(function(r){
+    return {
+      cover_url: r.cover_url || null,
+      title_en: r.title_en,
+      title_ar: r.title_ar,
+      main_character: r.main_character,
+      side_characters: r.side_characters || null,
+      release_year: r.release_year === '' ? null : Number(r.release_year),
+      season: r.season,
+      synopsis: r.synopsis
+    };
+  });
+  const res = await sb.from(TABLE).insert(payload);
+  if(res.error) throw res.error;
+  return payload.length;
+}
+
+async function removeRow(row){
+  if(!confirm('حذف «' + row.title_en + '» من الأرشيف؟')) return;
+
+  if(live && sb){
+    let res;
+    if(row.id !== undefined && row.id !== null){
+      res = await sb.from(TABLE).delete().eq('id', row.id);
+    } else {
+      res = await sb.from(TABLE).delete().eq('title_en', row.title_en);
+    }
+    if(res.error){
+      say('تعذّر الحذف من قاعدة البيانات: ' + res.error.message, true);
+      return;
+    }
+  }
+  const i = rows.indexOf(row);
+  if(i > -1) rows.splice(i, 1);
+  render();
+  say('تم حذف «' + row.title_en + '» من الأرشيف.');
+}
+
+/* ==================== الإضافة ==================== */
+document.getElementById('addBtn').addEventListener('click', async function(){
+  const val = function(id){ return document.getElementById(id).value.trim(); };
+
+  const cover = val('fImg'), en = val('fEn'), ar = val('fAr'), mc = val('fMc'),
+        sc = val('fSc'), year = val('fYear'), season = val('fSeason'), syn = val('fSyn');
+
+  if(!en || !ar || !mc || !year || !syn){
+    say('يرجى تعبئة الحقول الأساسية: الاسم، الترجمة، البطل، السنة، النبذة.', true);
+    return;
+  }
+  const words = syn.split(/\s+/).filter(Boolean).length;
+  if(words < 40){
+    say('النبذة الحالية ' + words + ' كلمة — المطلوب 40 كلمة أو أكثر.', true);
+    return;
+  }
+
+  const row = {
+    cover_url: cover, title_en: en, title_ar: ar, main_character: mc,
+    side_characters: sc, release_year: Number(year), season: season, synopsis: syn
+  };
+
+  const btn = this;
+  btn.disabled = true;
+
+  try{
+    if(sb){
+      await insertRows([row]);
+      lastAdd = new Date().toISOString();
+      writeMeta();
+      say('تمت إضافة «' + en + '» إلى قاعدة البيانات السحابية.');
+      await loadFromDb(true);
+    } else {
+      throw new Error('offline');
+    }
+  }catch(err){
+    rows.push(row);
+    lastAdd = new Date().toISOString();
+    writeMeta();
+    render();
+    say('تمت الإضافة محلياً فقط (تعذّر الحفظ السحابي: ' + (err.message || err) + ').', true);
+  }finally{
+    btn.disabled = false;
+  }
+
+  ['fImg','fEn','fAr','fMc','fSc','fYear','fSyn'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+});
+
+/* ==================== الاستيراد والاستعادة ==================== */
+document.getElementById('importBtn').addEventListener('click', async function(){
+  if(!sb){ say('مكتبة Supabase غير محمّلة — تحقّق من الاتصال بالإنترنت.', true); return; }
+  if(!confirm('سيتم رفع جميع الأنميات الموجودة في المستند (' + SEED.length + ' عنواناً) دفعة واحدة إلى قاعدة البيانات. المتابعة؟')) return;
+
+  const btn = this;
+  btn.disabled = true;
+  say('جارٍ رفع الأنميات إلى قاعدة البيانات…');
+
+  try{
+    const n = await insertRows(SEED);
+    lastAdd = new Date().toISOString();
+    writeMeta();
+    await loadFromDb(true);
+    say('تم استيراد ' + n + ' عنواناً إلى قاعدة البيانات وعرضها فوراً.');
+  }catch(err){
+    say('فشل الاستيراد: ' + (err.message || err), true);
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('reloadBtn').addEventListener('click', function(){
+  say('جارٍ التحديث…');
+  loadFromDb(false);
+});
+
+document.getElementById('resetBtn').addEventListener('click', function(){
+  if(!confirm('سيتم عرض القائمة المبدئية محلياً (دون حذف ما في قاعدة البيانات). المتابعة؟')) return;
+  rows = SEED.slice();
+  render();
+  say('تم عرض القائمة المبدئية محلياً — استخدم زر الاستيراد لرفعها إلى السحابة.');
+});
+
+/* ==================== التشغيل ==================== */
+(function init(){
+  const m = readMeta();
+  lastAdd = m.lastAdd || '';
+  stats();
+  loadFromDb(true);
+})();
+</script>
+</body>
+</html> 
